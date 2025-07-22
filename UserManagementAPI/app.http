@@ -1,9 +1,10 @@
 ###
 GET https://localhost:7078/users
+Authorization: 123
 
 ###
-GET https://localhost:7078/users/1
-
+GET https://localhost:7078/users/10
+Authorization: 123
 
 ###
 POST https://localhost:7078/users

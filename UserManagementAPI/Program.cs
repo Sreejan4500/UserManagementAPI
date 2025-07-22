@@ -1,13 +1,14 @@
+using UserManagementAPI;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
-builder.Services.AddRouting();
 
 var app = builder.Build();
 
-
+app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<LoggingMiddleware>();
+app.UseMiddleware<TokenAuthenticationMiddleware>();
 
 app.MapControllers();
-
-app.MapGet("/", () => "Hello World!");
 
 app.Run();
