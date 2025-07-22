@@ -1,0 +1,28 @@
+###
+GET https://localhost:7078/users
+
+###
+GET https://localhost:7078/users/1
+
+
+###
+POST https://localhost:7078/users
+Content-Type: application/json
+{
+  "id": 4,
+  "name": "Ananya",
+  "email": "ananya@dev.com"
+}
+
+###
+PUT https://localhost:7078/users/2
+Content-Type: application/json
+{
+  "id": 2,
+  "name": "Anany",
+  "email": "anany@dev.com"
+}
+
+
+###
+DELETE https://localhost:7078/users/1
