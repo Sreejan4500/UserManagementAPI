@@ -15,39 +15,62 @@ namespace UserManagementAPI.Controllers
         };
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(users);
+        public IActionResult GetAll()
+        {
+            try { return Ok(users); }
+            catch { return StatusCode(500, "Error retrieving users."); }
+        }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var user = users.FirstOrDefault(u => u.Id == id);
-            return Ok(user);
+            try
+            {
+                var user = users.FirstOrDefault(u => u.Id == id);
+                if (user == null) return NotFound($"User with ID {id} not found.");
+                return Ok(user);
+            }
+            catch { return StatusCode(500, "Error retrieving user."); }
         }
 
         [HttpPost]
         public IActionResult Create([FromBody] User newUser)
         {
-            newUser.Id = users.Any() ? users.Max(u => u.Id) + 1 : 1;
-            users.Add(newUser);
-            return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
+            try
+            {
+                newUser.Id = users.Any() ? users.Max(u => u.Id) + 1 : 1;
+                users.Add(newUser);
+                return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
+            }
+            catch { return StatusCode(500, "Error creating user."); }
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] User updatedUser)
         {
-            var user = users.FirstOrDefault(u => u.Id == id);
+            try
+            {
+                var user = users.FirstOrDefault(u => u.Id == id);
+                if (user == null) return NotFound($"User with ID {id} not found.");
 
-            user.Name = updatedUser.Name;
-            user.Email = updatedUser.Email;
-            return NoContent();
+                user.Name = updatedUser.Name;
+                user.Email = updatedUser.Email;
+                return NoContent();
+            }
+            catch { return StatusCode(500, "Error updating user."); }
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var user = users.FirstOrDefault(u => u.Id == id);
-            users.Remove(user);
-            return NoContent();
+            try
+            {
+                var user = users.FirstOrDefault(u => u.Id == id);
+                if (user == null) return NotFound($"User with ID {id} not found.");
+                users.Remove(user);
+                return NoContent();
+            }
+            catch { return StatusCode(500, "Error deleting user."); }
         }
     }
 }
